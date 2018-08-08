@@ -14,5 +14,5 @@ In case of input data being supplied to the question, it should be assumed to be
 """
 
 # the question says each odd number should be squared so my solution reflects that even though the author forgot to square the output in the docstring
-seq = [int(i) * int(i) for i in raw_input("Enter a sequence of comma-separated numbers:").split(",") if int(i) % 2 != 0]
+seq = [int(i) ** 2 for i in raw_input("Enter a sequence of comma-separated numbers:").split(",") if int(i) % 2 != 0]
 print ",".join(str(i) for i in seq)
