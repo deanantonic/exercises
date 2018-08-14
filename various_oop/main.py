@@ -17,12 +17,19 @@ def get_csv_file_name(argv_list):
 
 
 def format_output(person):
+    if isinstance(person, Person):
+        # this if clause handles some tests
+        return "This number belongs to: {}".format(person._name)
     return "No match found." if person is None else "This number belongs to: {}".format(person)
 
 
 def get_person_by_phone_number(person_list, user_input_phone_number):
     for person in person_list:
-        if Person.normalize_phone_number(user_input_phone_number) == Person.normalize_phone_number(person.split(",")[1]):
+        if isinstance(person, Person):
+            # this if clause handles some tests
+            if Person.normalize_phone_number(user_input_phone_number) == Person.normalize_phone_number(person._phone_number):
+                return person
+        elif Person.normalize_phone_number(user_input_phone_number) == Person.normalize_phone_number(person.split(",")[1]):
             return person
 
 
