@@ -2,13 +2,14 @@ import sys
 import os
 from person import Person
 parentDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# __file__ is the full path to where the script you are running is located.
 os.sys.path.insert(0, parentDir)
-# run this on the command line with "python various_oop/main.py ./phone_data_10000.csv"
+# run this on the command line with "python various_oop/main.py phone_data_10000.csv"
 
 
 def open_csv(file_name):
-    with open('/home/python/Desktop/exercises/exercises/various_oop/phone_data_1000.csv', 'r') as f:
-        return [i.rstrip() for i in f.readlines()]
+    with open(file_name, 'r') as f:
+        return [i.rstrip() for i in f]
 
 
 def get_csv_file_name(argv_list):
@@ -31,10 +32,12 @@ def main():
         print('No database file was given.')
         sys.exit(0)
 
+    file_relpath = '/various_oop/{}'.format(file_name)
+    file_name = "{}{}".format(parentDir, file_relpath)
     person_list = open_csv(file_name)
-    print person_list
     user_input_phone_number = raw_input('Please enter the phone number: ')
-    match_person = get_person_by_phone_number(person_list, user_input_phone_number).split(",")[0]
+    match_person = get_person_by_phone_number(person_list, user_input_phone_number)
+    match_person = match_person.split(",")[0] if match_person is not None else None
 
     print(format_output(match_person))
 
