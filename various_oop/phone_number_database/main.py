@@ -36,6 +36,7 @@ What the application should do?
 """
 import sys
 import os
+import configparser
 from person import Person
 parentDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # __file__ is the full path to where the script you are running is located.
@@ -46,6 +47,11 @@ os.sys.path.insert(0, parentDir)
 def open_csv(file_name):
     with open(file_name, 'r') as f:
         return [i.rstrip() for i in f]
+
+
+def edit_csv(file_name, record):
+    with open(file_name, 'a') as f:
+        f.write(record)
 
 
 def get_csv_file_name(argv_list):
@@ -69,7 +75,14 @@ def get_person_by_phone_number(person_list, user_input_phone_number):
             return person
 
 
-def main():
+def getConfiguration():
+    parser = configparser.ConfigParser()
+    parser.optionxform = str
+    parser.read("{}{}".format(parentDir, '/phone_number_database/auth.cfg'))
+    return parser
+
+
+def getFileName():
     file_name = get_csv_file_name(sys.argv)
     if file_name is None:
         print('No database file was given.')
@@ -77,7 +90,45 @@ def main():
 
     file_relpath = '/phone_number_database/{}'.format(file_name)
     file_name = "{}{}".format(parentDir, file_relpath)
-    person_list = open_csv(file_name)
+    return file_name
+
+
+def adminExec(admin):
+    config = getConfiguration()
+    # TODO salt and hash password
+    if admin != config.get("admin", "pass"):
+        print "Wrong administrator password. This attempt has been logged!"
+        return
+
+    def welcome():
+        action = raw_input("Welcome back Administrator! Would you like to edit or read database records (e-edit, r-read, press enter for exit): ")
+        if not action or action not in ("r", "e"):
+            return
+
+        if action == "r":
+            main()
+            return
+        elif action == "e":
+            # TODO check record conforms to format or record already in database
+
+            while True:
+                record = raw_input("Enter full name and phone number separating them with a comma e.g. John Doe,0356-5456-323, press enter for exit: ")
+                if not record:
+                    return
+
+                record += "\n"
+                edit_csv(getFileName(), record)
+                print "Record successfully added!"
+                moreRecords = raw_input("Would you like to edit more records Yes or No: ")
+                if not moreRecords or moreRecords.lower() in ("no", "n"):
+                    print "Finished editing database."
+                    return
+
+    welcome()
+
+
+def main():
+    person_list = open_csv(getFileName())
     user_input_phone_number = raw_input('Please enter the phone number: ')
     match_person = get_person_by_phone_number(person_list, user_input_phone_number)
     match_person = match_person.split(",")[0] if match_person is not None else None
@@ -86,4 +137,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    admin = raw_input("Enter administrator password or press enter for guest user: ")
+    if not admin:
+        print "Welcome Guest user!"
+        main()
+
+    adminExec(admin)
