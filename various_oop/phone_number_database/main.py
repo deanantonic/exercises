@@ -39,7 +39,7 @@ def main():
         print('No database file was given.')
         sys.exit(0)
 
-    file_relpath = '/various_oop/{}'.format(file_name)
+    file_relpath = '/phone_number_database/{}'.format(file_name)
     file_name = "{}{}".format(parentDir, file_relpath)
     person_list = open_csv(file_name)
     user_input_phone_number = raw_input('Please enter the phone number: ')
