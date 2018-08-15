@@ -62,17 +62,29 @@ def format_output(person):
     if isinstance(person, Person):
         # this if clause handles some tests
         return "This number belongs to: {}".format(person._name)
-    return "No match found." if person is None else "This number belongs to: {}".format(person)
+    elif isinstance(person, list):
+        return "Incomplete number, possible owners:\n{}".format("\n".join(person))
+    elif isinstance(person, str):
+        return "This number belongs to: {}".format(person)
+    else:
+        return "No match found."
 
 
 def get_person_by_phone_number(person_list, user_input_phone_number):
+    possibleRecords = []
+    normalizedNumber = Person.normalize_phone_number(user_input_phone_number)
+    phoneNumberLength = len(normalizedNumber)
     for person in person_list:
         if isinstance(person, Person):
             # this if clause handles some tests
-            if Person.normalize_phone_number(user_input_phone_number) == Person.normalize_phone_number(person._phone_number):
+            if normalizedNumber == Person.normalize_phone_number(person._phone_number):
                 return person
-        elif Person.normalize_phone_number(user_input_phone_number) == Person.normalize_phone_number(person.split(",")[1]):
+        elif normalizedNumber == Person.normalize_phone_number(person.split(",")[1]):
             return person
+        else:
+            if Person.normalize_phone_number(person.split(",")[1])[:phoneNumberLength] == normalizedNumber:
+                possibleRecords.append(person)
+    return possibleRecords if possibleRecords else None
 
 
 def getConfiguration():
@@ -129,9 +141,14 @@ def adminExec(admin):
 
 def main():
     person_list = open_csv(getFileName())
-    user_input_phone_number = raw_input('Please enter the phone number: ')
+    user_input_phone_number = raw_input('Please enter the phone number, press enter for exit: ')
+    if not user_input_phone_number:
+        print "No phone number provided."
+        return
+
     match_person = get_person_by_phone_number(person_list, user_input_phone_number)
-    match_person = match_person.split(",")[0] if match_person is not None else None
+    if isinstance(match_person, str):
+        match_person = match_person.split(",")[0]
 
     print(format_output(match_person))
 
@@ -141,5 +158,5 @@ if __name__ == '__main__':
     if not admin:
         print "Welcome Guest user!"
         main()
-
-    adminExec(admin)
+    else:
+        adminExec(admin)
