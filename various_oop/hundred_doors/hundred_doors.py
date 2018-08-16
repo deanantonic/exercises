@@ -24,17 +24,10 @@ def generate_doors(count=100):
 #   - doors: list of Door objects
 # Return: list of toggled Door instances
 def toggle_doors(doors):
-    toggled = [False] * len(doors)
-    for i in range(len(doors)):
-        for j in range(i, len(doors), i+1):
-            toggled[j] = not toggled[j]
-
-    toToggle = zip(doors, toggled)
-    for i in toToggle:
-        if i[1] is True:
-            i[0].toggle()
-
-    return [i[0] for i in toToggle]
+    for index in range(len(doors)):
+        for door in range(index, len(doors), index + 1):
+            doors[door].toggle()
+    return doors
 
 
 # Colects the ids of the open Doors form the given Door list
