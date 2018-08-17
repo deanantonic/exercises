@@ -21,8 +21,8 @@ class Warrior:
 
     @property
     def is_alive(self):
-        return True if self.health > 0 else False
-
+        # return True if self.health > 0 else False
+        return self.health > 0
 
 class Knight(Warrior):
 
