@@ -8,3 +8,5 @@ https://py.checkio.org/
 https://github.com/CodecoolBP20161/python-4sitw-oop-exercises
 
 https://github.com/CodecoolBP20161/python-oop-coding-dojo
+
+https://edabit.com/challenges

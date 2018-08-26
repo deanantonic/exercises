@@ -15,9 +15,7 @@ def verify_anagrams(first_word, second_word):
     first = sorted([i.lower() for i in first_word if i != " "])
     second = sorted([i.lower() for i in second_word if i != " "])
 
-    if first == second:
-        return True
-    return False
+    return first == second
 
 
 
