@@ -55,9 +55,8 @@ Input: Statements and expressions that use the ‘Person’ class.
 
 Output: The behaviour of an instance as described above.
 
-Precondition: All data is correct. 
+Precondition: All data is correct.
 """
-
 from datetime import datetime
 
 
@@ -80,7 +79,7 @@ class Person:
         today = "01.01.2018"
         today_datetime = datetime.strptime(today, '%M.%d.%Y')
         birth_datetime = datetime.strptime(self.birth_date, '%M.%d.%Y')
-        return (int( ((today_datetime - birth_datetime).days)/365.24))
+        return int(((today_datetime - birth_datetime).days)/365.24)
 
 
 
@@ -93,7 +92,7 @@ class Person:
             return "Is a {}".format(self.job)
 
     def money(self):
-        "{:, }".format(self.salary * 12 * self.working_years)
+        return "{:,}".format(self.salary * 12 * self.working_years).replace(",", " ")
 
 
     def home(self):
