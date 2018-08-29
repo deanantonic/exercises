@@ -39,8 +39,8 @@ other = ['.', ':', '!', '?', '@', '$', '%']
 
 class HackerLanguage:
     def __init__(self):
-        self.cipher = ""  # 密文
-        self.clear = ""  # 明文
+        self.cipher = ""
+        self.clear = ""
 
     def write(self, text):
         self.cipher += text
