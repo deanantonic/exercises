@@ -20,16 +20,16 @@ all(0 ≤ n < len(state) for n in pipe_numbers)
 """
 def rotate(state, pipe_numbers):
     pipe_numbers = sorted(set(pipe_numbers))
-    PipeSplit = [0] + [i + 1 for i, j in
+    pipeSplit = [0] + [i + 1 for i, j in
                        enumerate(zip(pipe_numbers, pipe_numbers[1:]))
                        if j[0] == j[1]] + [len(pipe_numbers)]
-    Cannons = [pipe_numbers[i[0]:i[1]] for i in zip(PipeSplit, PipeSplit[1:])]
-    RotateCounter = []
-    for i in Cannons:
+    cannons = [pipe_numbers[i[0]:i[1]] for i in zip(pipeSplit, pipeSplit[1:])]
+    rotateCounter = []
+    for i in cannons:
         for j in range(len(state)):
             if len(i) == sum([k1 for k0, k1 in enumerate(state[-j:]+state[:-j]) if k0 in i]):
-                RotateCounter.append(j)
-    return RotateCounter
+                rotateCounter.append(j)
+    return rotateCounter
 
 
 if __name__ == '__main__':
