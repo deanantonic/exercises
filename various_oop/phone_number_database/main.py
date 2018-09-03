@@ -38,10 +38,12 @@ import sys
 import os
 import configparser
 from person import Person
+from DB import DB
 parentDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # __file__ is the full path to where the script you are running is located.
 os.sys.path.insert(0, parentDir)
 # run this on the command line with "python various_oop/main.py phone_data_10000.csv"
+db = DB()
 
 
 def open_csv(file_name):
@@ -140,7 +142,8 @@ def adminExec(admin):
 
 
 def main():
-    person_list = open_csv(getFileName())
+    # person_list = open_csv(getFileName())
+    person_list = db.getRecords()
     user_input_phone_number = raw_input('Please enter the phone number, press enter for exit: ')
     if not user_input_phone_number:
         print "No phone number provided."
